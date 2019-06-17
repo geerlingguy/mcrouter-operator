@@ -1,0 +1,32 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: instance-1
+provisioner:
+  name: ansible
+  options:
+    diff: True
+    v: True
+  playbooks:
+    create: create.yml
+    prepare: prepare.yml
+    destroy: destroy.yml
+  lint:
+    name: ansible-lint
+    enabled: False
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    - destroy

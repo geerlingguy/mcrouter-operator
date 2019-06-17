@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    molecule_file: "{{ lookup('env','MOLECULE_FILE') }}"
+    molecule_scenario_directory: "{{ lookup('env','MOLECULE_SCENARIO_DIRECTORY') }}"
+    molecule_yml: "{{ lookup('file', molecule_file) | from_yaml }}"
+  tasks:
+    - name: Create molecule instance(s)
+      docker_container:
+        name: "{{ item.name }}"
+        hostname: "{{ item.name }}"
+        image: solita/ubuntu-systemd:latest
+        command: /sbin/init
+        capabilities:
+          - SYS_ADMIN
+        volumes:
+          - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        tmpfs:
+          - /run
+          - /run/lock
+        state: started
+        recreate: no
+        log_driver: none
+      with_items: "{{ molecule_yml.platforms }}"
