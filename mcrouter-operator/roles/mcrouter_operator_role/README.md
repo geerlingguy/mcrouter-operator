@@ -1,7 +1,7 @@
 memcached-operator-role
 =========
 
-An Ansible role which deploys a Memcached Operator to Kubernetes. This role is referenced by the Openshift Ansible Operator Tutorial that can be found here:
+An Ansible role which deploys a Mcrouter Operator to Kubernetes. This role is referenced by the Openshift Ansible Operator Tutorial that can be found here:
 
 https://learn.openshift.com/ansibleop/ansible-operator-overview/
 
@@ -35,4 +35,4 @@ BSD
 Author Information
 ------------------
 
-dymurray
+Anshul Behl (anshulbehl.19@gmail.com)
