@@ -13,7 +13,7 @@ Kubernetes. :)
 Role Variables
 --------------
 
-None. 
+None.
 
 Dependencies
 ------------
@@ -36,3 +36,4 @@ Author Information
 ------------------
 
 Anshul Behl (anshulbehl.19@gmail.com)
+John Lieske (@ johnlieske)
