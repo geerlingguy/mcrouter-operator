@@ -1,9 +1,0 @@
----
-# defaults vars
-
-mcrouter_gpg_key: "https://facebook.github.io/mcrouter/debrepo/xenial/PUBLIC.KEY"
-mcrouter_repository: "deb https://facebook.github.io/mcrouter/debrepo/xenial xenial contrib"
-mcrouter_version: "0.40.0-1"
-mcrouter_port: "11213"
-mcrouter_address_pool:
-  - localhost:11211
