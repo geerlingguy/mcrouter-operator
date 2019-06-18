@@ -1,7 +1,0 @@
-apiVersion: cache.example.com/v1alpha1
-kind: Mcrouter
-metadata:
-  name: example-mcrouter
-spec:
-  # Add fields here
-  size: 3
