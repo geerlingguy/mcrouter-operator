@@ -7,20 +7,20 @@
     ansible_python_interpreter: '{{ ansible_playbook_python }}'
     deploy_dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/deploy"
     image_name: cache.example.com/memcached-operator:testing
-    custom_resource: "{{ lookup('file', '/'.join([deploy_dir, 'crds/cache_v1alpha2_memcached_cr.yaml'])) | from_yaml }}"
+    custom_resource: "{{ lookup('file', '/'.join([deploy_dir, 'crds/cache_v1alpha1_memcached_cr.yaml'])) | from_yaml }}"
   tasks:
-  - name: Create the cache.example.com/v1alpha2.Memcached
+  - name: Create the cache.example.com/v1alpha1.Memcached
     k8s:
       namespace: '{{ namespace }}'
-      definition: "{{ lookup('file', '/'.join([deploy_dir, 'crds/cache_v1alpha2_memcached_cr.yaml'])) }}"
+      definition: "{{ lookup('file', '/'.join([deploy_dir, 'crds/cache_v1alpha1_memcached_cr.yaml'])) }}"
 
   - name: Get the newly created Custom Resource
     debug:
-      msg: "{{ lookup('k8s', group='cache.example.com', api_version='v1alpha2', kind='Memcached', namespace=namespace, resource_name=custom_resource.metadata.name) }}"
+      msg: "{{ lookup('k8s', group='cache.example.com', api_version='v1alpha1', kind='Memcached', namespace=namespace, resource_name=custom_resource.metadata.name) }}"
 
   - name: Wait 40s for reconciliation to run
     k8s_facts:
-      api_version: 'v1alpha2'
+      api_version: 'v1alpha1'
       kind: 'Memcached'
       namespace: '{{ namespace }}'
       name: '{{ custom_resource.metadata.name }}'
