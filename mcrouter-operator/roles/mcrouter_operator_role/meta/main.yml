@@ -1,6 +1,6 @@
 galaxy_info:
-  author: Dylan Murray
-  description: An Ansible role which deploys a Memcached Operator to Kubernetes
+  author: Anshul Behl, John Lieske
+  description: An Ansible role which deploys a Mcrouter Operator to Kubernetes
   company: Red Hat, Inc
 
   # If the issue tracker for your role is not on github, uncomment the
