@@ -1,6 +1,6 @@
 # AnsOpDemo
 
-This repo contains the Mcrouter Ansible Operator. Mcrouter uses memcache as backend and the operator written for memcache deployment by Dylan Murray (@dymurray) helped as a reference for this.
+This repo contains the Mcrouter Ansible Operator. Mcrouter uses memcache as backend and the operator written for memcache deployment by Dylan Murray [@dymurray](https://github.com/dymurray) helped as a reference for this.
 This operator was created using the [Operator-SDK](https://github.com/operator-framework/operator-sdk) and is intended for PoC/small scale demos in their current form.
 
 # Instructions to Run
