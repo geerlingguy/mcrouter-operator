@@ -1,0 +1,10 @@
+---
+- version: v1alpha2
+  group: mcrouter.example.com
+  kind: Mcrouter
+  role: /opt/ansible/roles/mcrouter_operator_role
+
+- version: v1alpha2
+  group: memcached.example.com
+  kind: Memcached
+  role: /opt/ansible/roles/memcached_operator_role

@@ -1,5 +1,0 @@
----
-- version: v1alpha2
-  group: cache.example.com
-  kind: Mcrouter
-  role: /opt/ansible/roles/mcrouter_operator_role

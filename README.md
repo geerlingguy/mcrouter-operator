@@ -1,8 +1,65 @@
 # AnsOpDemo
-This repo contains 2 Ansible operators (as of 6/18/19). One for memcache, written by Dylan Murray, and another for Mcrouter, written by Anshul Behl and John Lieske.
 
-These operators were created using the [Operator-SDK](https://github.com/operator-framework/operator-sdk) and are intended for PoC/small scale demos in their current form. If you want to learn more about Ansible Operators, check out these links for more information.
+This repo contains the Mcrouter Ansible Operator. Mcrouter uses memcache as backend and the operator written for memcache deployment by Dylan Murray helped as a reference for this.
+This operator was created using the [Operator-SDK](https://github.com/operator-framework/operator-sdk) and is intended for PoC/small scale demos in their current form.
 
+# Instructions to Run
+
+#### Requirements
+- minikube
+- kubectl
+- operator-sdk
+#### Connect to minikube docker environment
+```sh
+eval $(minikube docker-env)
+```
+####  Create the custom resource definition for memcache and mcrouter
+```sh
+kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_crd.yaml
+kubectl create -f deploy/crds/memcached_v1alpha2_memcached_crd.yaml
+```
+#### Build the mcrouter-operator docker image
+```sh
+operator-sdk build mcrouter-operator:v0.0.1
+```
+#### Create service account, role and role_bindings
+```sh
+kubectl create -f deploy/service_account.yaml
+kubectl create -f deploy/role.yaml
+kubectl create -f deploy/role_binding.yaml
+```
+#### Deploy the Operator
+```sh
+kubectl create -f deploy/operator.yaml
+```
+#### Create the custom resources for memcache and mcrouter
+You can change the pods to be deployed inside the files
+```sh
+kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_cr.yaml
+kubectl create -f deploy/crds/memcached_v1alpha2_memcached_cr.yaml
+```
+
+> Once everything is deployed you can use the `kubectl get all` command 
+> to check of mcrouter-opertor and cache and deloyed mcrouter are working
+
+#### Use the below testing scenario to check if mcrouter and memcached are working as expected
+Connect to mcrouter using the telnet container and send the following commands to see if you get expected output
+```sh
+kubectl run -it --rm telnet --image=jess/telnet --restart=Never <mcrouter_pod_ip> 5000
+```
+In the telnet prompt send below commands
+```
+    set mykey 0 0 5
+    hello
+    get mykey
+    quit
+```
+Connect to memcached service using the telnet container and send the `stats` command to see if it gives you output.
+
+##### Helpful articles and referenced content below:
 https://www.ansible.com/blog/ansible-operator
 https://opensource.com/article/18/10/ansible-operators-kubernetes
 https://blog.openshift.com/reaching-for-the-stars-with-ansible-operator/
+https://github.com/Dev25/mcrouter-docker/
+https://itnext.io/a-practical-kubernetes-operator-using-ansible-an-example-d3a9d3674d5b
+https://github.com/helm/charts/tree/master/stable/mcrouter
