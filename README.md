@@ -57,9 +57,9 @@ In the telnet prompt send below commands
 Connect to memcached service using the telnet container and send the `stats` command to see if it gives you output.
 
 ##### Helpful articles and referenced content below:
-https://www.ansible.com/blog/ansible-operator
-https://opensource.com/article/18/10/ansible-operators-kubernetes
-https://blog.openshift.com/reaching-for-the-stars-with-ansible-operator/
-https://github.com/Dev25/mcrouter-docker/
-https://itnext.io/a-practical-kubernetes-operator-using-ansible-an-example-d3a9d3674d5b
-https://github.com/helm/charts/tree/master/stable/mcrouter
+- https://www.ansible.com/blog/ansible-operator
+- https://opensource.com/article/18/10/ansible-operators-kubernetes
+- https://blog.openshift.com/reaching-for-the-stars-with-ansible-operator/
+- https://github.com/Dev25/mcrouter-docker/
+- https://itnext.io/a-practical-kubernetes-operator-using-ansible-an-example-d3a9d3674d5b
+- https://github.com/helm/charts/tree/master/stable/mcrouter
