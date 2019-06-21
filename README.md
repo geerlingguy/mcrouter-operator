@@ -1,6 +1,6 @@
 # AnsOpDemo
 
-This repo contains the Mcrouter Ansible Operator. Mcrouter uses memcache as backend and the operator written for memcache deployment by Dylan Murray helped as a reference for this.
+This repo contains the Mcrouter Ansible Operator. Mcrouter uses memcache as backend and the operator written for memcache deployment by Dylan Murray [@dymurray](https://github.com/dymurray) helped as a reference for this.
 This operator was created using the [Operator-SDK](https://github.com/operator-framework/operator-sdk) and is intended for PoC/small scale demos in their current form.
 
 # Instructions to Run
@@ -39,7 +39,7 @@ kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_cr.yaml
 kubectl create -f deploy/crds/memcached_v1alpha2_memcached_cr.yaml
 ```
 
-> Once everything is deployed you can use the `kubectl get all` command 
+> Once everything is deployed you can use the `kubectl get all` command
 > to check of mcrouter-opertor and cache and deloyed mcrouter are working
 
 #### Use the below testing scenario to check if mcrouter and memcached are working as expected
