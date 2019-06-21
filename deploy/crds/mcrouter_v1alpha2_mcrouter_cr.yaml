@@ -1,0 +1,7 @@
+apiVersion: mcrouter.example.com/v1alpha2
+kind: Mcrouter
+metadata:
+  name: example-mcrouter
+spec:
+  # Add fields here
+  size: 1
