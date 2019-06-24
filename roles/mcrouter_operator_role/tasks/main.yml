@@ -1,15 +1,76 @@
 ---
 # tasks file for Mcrouter
+- name: start memcached
+  k8s:
+    definition:
+      kind: StatefulSet
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ memcache_name }}'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: "{{ size }}"
+        serviceName: '{{ memcache_name }}-service'
+        selector:
+          matchLabels:
+            app: cache
+        template:
+          metadata:
+            labels:
+              app: cache
+          spec:
+            containers:
+            - name: memcached
+              command:
+              - memcached
+              - -m=64
+              - -o
+              - modern
+              - -v
+              image: "memcached:1.4.36-alpine"
+              ports:
+                - containerPort: 11211
+
+- name: start cache service
+  k8s:
+    definition:
+      kind: Service
+      apiVersion: v1
+      metadata:
+        name: '{{ memcache_name }}-service'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        ports:
+        - port: 11211
+          protocol: TCP
+        selector:
+          matchLabels:
+          app: cache
+
+
+- name: create pool
+  set_fact:
+    tmpvar: '{{tmpvar}}"{{memcache_name}}-{{item}}.{{memcache_name}}-service.{{ meta.namespace }}.svc.cluster.local:11211",'
+  with_sequence: start=0 end={{size|int-1}}
+- name: remove trailing comma
+  set_fact:
+    tmpvar: "{{ tmpvar | regex_replace('\\,$', '') }}"
+
+
+- debug:
+    msg: "{{  tmpvar }}"
+
+
 - name: start mcrouter
   k8s:
     definition:
       kind: Deployment
       apiVersion: apps/v1
       metadata:
-        name: '{{ meta.name }}-mcrouter'
+        name: '{{ mcrouter_name }}'
         namespace: '{{ meta.namespace }}'
       spec:
-        replicas: "{{size}}"
+        replicas: 1
         selector:
           matchLabels:
             app: mcrouter
@@ -22,7 +83,7 @@
             - name: mcrouter
               command:
               - mcrouter
-              - --config-str={"pools":{"A":{"servers":["cache:11211"]}},"route":"PoolRoute|A"}
+              - --config-str={"pools":{"A":{"servers":[{{ tmpvar }}]}},"route":"PoolRoute|A"}
               - -p
               - "5000"
               image: "devan2502/mcrouter:latest"

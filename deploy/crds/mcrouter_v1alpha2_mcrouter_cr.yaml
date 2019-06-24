@@ -1,7 +1,9 @@
 apiVersion: mcrouter.example.com/v1alpha2
 kind: Mcrouter
 metadata:
-  name: example-mcrouter
+  name: mix 
 spec:
   # Add fields here
-  size: 1
+  size: 5
+  mcrouter_name: mcrouter
+  memcache_name: memcache
