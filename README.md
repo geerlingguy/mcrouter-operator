@@ -13,10 +13,9 @@ This operator was created using the [Operator-SDK](https://github.com/operator-f
 ```sh
 eval $(minikube docker-env)
 ```
-####  Create the custom resource definition for memcache and mcrouter
+####  Create the custom resource definition for mcrouter
 ```sh
 kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_crd.yaml
-kubectl create -f deploy/crds/memcached_v1alpha2_memcached_crd.yaml
 ```
 #### Build the mcrouter-operator docker image
 ```sh
@@ -32,15 +31,14 @@ kubectl create -f deploy/role_binding.yaml
 ```sh
 kubectl create -f deploy/operator.yaml
 ```
-#### Create the custom resources for memcache and mcrouter
+#### Create the custom resources for mcrouter
 You can change the pods to be deployed inside the files
 ```sh
 kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_cr.yaml
-kubectl create -f deploy/crds/memcached_v1alpha2_memcached_cr.yaml
 ```
 
 > Once everything is deployed you can use the `kubectl get all` command
-> to check of mcrouter-opertor and cache and deloyed mcrouter are working
+> to check of mcrouter-operator and memcache and deployed mcrouter are working
 
 #### Use the below testing scenario to check if mcrouter and memcached are working as expected
 Connect to mcrouter using the telnet container and send the following commands to see if you get expected output
