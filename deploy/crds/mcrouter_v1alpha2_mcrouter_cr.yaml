@@ -4,6 +4,7 @@ metadata:
   name: mix 
 spec:
   # Add fields here
-  size: 5
+  size: 2
+  mcrouter_size: 1
   mcrouter_name: mcrouter
   memcache_name: memcache
