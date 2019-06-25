@@ -47,8 +47,7 @@
           matchLabels:
           app: cache
 
-
-- name: create pool
+- name: create memcache pool string
   set_fact:
     tmpvar: '{{tmpvar}}"{{memcache_name}}-{{item}}.{{memcache_name}}-service.{{ meta.namespace }}.svc.cluster.local:11211",'
   with_sequence: start=0 end={{size|int-1}}
@@ -56,10 +55,8 @@
   set_fact:
     tmpvar: "{{ tmpvar | regex_replace('\\,$', '') }}"
 
-
 - debug:
     msg: "{{  tmpvar }}"
-
 
 - name: start mcrouter
   k8s:
@@ -70,7 +67,7 @@
         name: '{{ mcrouter_name }}'
         namespace: '{{ meta.namespace }}'
       spec:
-        replicas: 1
+        replicas: "{{ mcrouter_size  }}"
         selector:
           matchLabels:
             app: mcrouter
