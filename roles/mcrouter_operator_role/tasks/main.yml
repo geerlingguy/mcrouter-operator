@@ -2,12 +2,12 @@
 # tasks file for Mcrouter
 - name: Create StatefulSet for Memcache
   k8s:
-    definition: "{{lookup('template', 'memcache_statefulset.tmpl')|from_yaml}}"
+    definition: "{{ lookup('template', 'memcache_statefulset.yaml.j2')|from_yaml }}"
 
 - name: Create Service for Memcache
   k8s:
-    definition: "{{lookup('template', 'memcache_service.tmpl')|from_yaml}}"
+    definition: "{{ lookup('template', 'memcache_service.yaml.j2')|from_yaml }}"
 
 - name: Create Deployment for Mcrouter attaching memcache servers to its pool
   k8s:
-    definition: "{{lookup('template', 'mcrouter_deployment.tmpl')|from_yaml}}"
+    definition: "{{ lookup('template', 'mcrouter_deployment.yaml.j2')|from_yaml }}"
