@@ -1,88 +1,13 @@
 ---
 # tasks file for Mcrouter
-- name: start memcached
+- name: Create StatefulSet for Memcache
   k8s:
-    definition:
-      kind: StatefulSet
-      apiVersion: apps/v1
-      metadata:
-        name: '{{ memcache_name }}'
-        namespace: '{{ meta.namespace }}'
-      spec:
-        replicas: "{{ size }}"
-        serviceName: '{{ memcache_name }}-service'
-        selector:
-          matchLabels:
-            app: cache
-        template:
-          metadata:
-            labels:
-              app: cache
-          spec:
-            containers:
-            - name: memcached
-              command:
-              - memcached
-              - -m=64
-              - -o
-              - modern
-              - -v
-              image: "memcached:1.4.36-alpine"
-              ports:
-                - containerPort: 11211
+    definition: "{{lookup('template', 'memcache_statefulset.tmpl')|from_yaml}}"
 
-- name: start cache service
+- name: Create Service for Memcache
   k8s:
-    definition:
-      kind: Service
-      apiVersion: v1
-      metadata:
-        name: '{{ memcache_name }}-service'
-        namespace: '{{ meta.namespace }}'
-      spec:
-        ports:
-        - port: 11211
-          protocol: TCP
-        selector:
-          matchLabels:
-          app: cache
+    definition: "{{lookup('template', 'memcache_service.tmpl')|from_yaml}}"
 
-- name: create memcache pool string
-  set_fact:
-    tmpvar: '{{tmpvar}}"{{memcache_name}}-{{item}}.{{memcache_name}}-service.{{ meta.namespace }}.svc.cluster.local:11211",'
-  with_sequence: start=0 end={{size|int-1}}
-- name: remove trailing comma
-  set_fact:
-    tmpvar: "{{ tmpvar | regex_replace('\\,$', '') }}"
-
-- debug:
-    msg: "{{  tmpvar }}"
-
-- name: start mcrouter
+- name: Create Deployment for Mcrouter attaching memcache servers to its pool
   k8s:
-    definition:
-      kind: Deployment
-      apiVersion: apps/v1
-      metadata:
-        name: '{{ mcrouter_name }}'
-        namespace: '{{ meta.namespace }}'
-      spec:
-        replicas: "{{ mcrouter_size  }}"
-        selector:
-          matchLabels:
-            app: mcrouter
-        template:
-          metadata:
-            labels:
-              app: mcrouter
-          spec:
-            containers:
-            - name: mcrouter
-              command:
-              - mcrouter
-              - --config-str={"pools":{"A":{"servers":[{{ tmpvar }}]}},"route":"PoolRoute|A"}
-              - -p
-              - "5000"
-              image: "devan2502/mcrouter:latest"
-              ports:
-                - containerPort: 5000
+    definition: "{{lookup('template', 'mcrouter_deployment.tmpl')|from_yaml}}"
