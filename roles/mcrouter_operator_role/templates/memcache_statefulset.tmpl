@@ -1,0 +1,29 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: '{{ meta.name }}-memcached'
+  namespace: '{{ meta.namespace }}'
+spec:
+  replicas: {{ size|int }}
+  serviceName: '{{ meta.name }}-memcached'
+  selector:
+    matchLabels:
+      app: '{{ meta.name }}-cache'
+  template:
+    metadata:
+      labels:
+        app: '{{ meta.name }}-cache'
+    spec:
+      containers:
+      - name: memcached
+        command:
+        - memcached
+        - -m=64
+        - -o
+        - modern
+        - -v
+        image: "memcached:1.4.36-alpine"
+        ports:
+          - containerPort: 11211
+
+

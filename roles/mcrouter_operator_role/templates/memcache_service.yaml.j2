@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: '{{ meta.name }}-memcached'
+  namespace: '{{ meta.namespace }}'
+spec:
+  ports:
+  - port: 11211
+    protocol: TCP
+  selector:
+    matchLabels:
+    app: '{{ meta.name }}-cache'
