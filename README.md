@@ -1,6 +1,6 @@
 # Mcrouter Operator
 
-[![Build Status](https://travis-ci.com/geerlingguy/AnsOpDemo.svg?branch=master)](https://travis-ci.com/geerlingguy/AnsOpDemo)
+[![Build Status](https://travis-ci.com/geerlingguy/mcrouter-operator.svg?branch=master)](https://travis-ci.com/geerlingguy/mcrouter-operator)
 
 The Mcrouter Ansible Operator was built with the [Operator SDK](https://github.com/operator-framework/operator-sdk) and [Ansible Operator](https://www.ansible.com/blog/ansible-operator). It is not yet intended for production use.
 
