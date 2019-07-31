@@ -19,16 +19,14 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          # Replace this with the built image name
-          image: "mcrouter-operator:v0.0.1"
+          image: "{{ operator_image }}"
           imagePullPolicy: "Never"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
-          # Replace this with the built image name
-          image: "mcrouter-operator:v0.0.1"
+          image: "{{ operator_image }}"
           imagePullPolicy: "Never"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
