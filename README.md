@@ -2,39 +2,76 @@
 
 [![Build Status](https://travis-ci.com/geerlingguy/mcrouter-operator.svg?branch=master)](https://travis-ci.com/geerlingguy/mcrouter-operator)
 
-The Mcrouter Ansible Operator was built with the [Operator SDK](https://github.com/operator-framework/operator-sdk) and [Ansible Operator](https://www.ansible.com/blog/ansible-operator). It is not yet intended for production use.
+The Mcrouter Operator was built with the [Ansible Operator SDK](https://github.com/operator-framework/operator-sdk/blob/master/doc/ansible/user-guide.md). It is not yet intended for production use.
 
 [Mcrouter](https://github.com/facebook/mcrouter) is a memcached protocol router for scaling memcached deployments, written by Facebook.
 
 [Dylan Murray](https://github.com/dymurray)'s memcached operator was the original inspiration for this operator.
 
-## Instructions to Run
+## Usage
 
-### Requirements
+This Kubernetes Operator is meant to be deployed in your Kubernetes cluster(s) and can manage one or more mcrouter instances in the same namespace as the operator.
+
+First you need to deploy Mcrouter Operator into your cluster:
+
+    kubectl apply -f TODO
+
+Then you can create instances of mcrouter, for example:
+
+  1. Create a file named `my-mcrouter.yml` with the following contents:
+
+         ```
+         ---
+         TODO
+         ```
+
+  2. Use `kubectl` to create the mcrouter instance in your cluster:
+
+         ```
+         kubectl apply -f my-mcrouter.yml
+         ```
+
+## Development
+
+### Testing
+
+#### Local tests with Molecule and KIND
+
+Ensure you have the testing dependencies installed (in addition to Docker):
+
+    pip install docker molecule openshift jmespath
+
+Run the local molecule test scenario:
+
+    molecule test -s test-local
+
+#### Local development with minikube
+
+##### Requirements
 
   - minikube
   - kubectl
   - operator-sdk
 
-### Connect to minikube docker environment
+##### Connect to minikube docker environment
 
 ```sh
 eval $(minikube docker-env)
 ```
 
-### Create the custom resource definition for mcrouter
+##### Create the custom resource definition for mcrouter
 
 ```sh
 kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_crd.yaml
 ```
 
-### Build the mcrouter-operator docker image
+##### Build the mcrouter-operator docker image
 
 ```sh
 operator-sdk build mcrouter-operator:v0.0.1
 ```
 
-### Create service account, role and role_bindings
+##### Create service account, role and role_bindings
 
 ```sh
 kubectl create -f deploy/service_account.yaml
@@ -42,13 +79,13 @@ kubectl create -f deploy/role.yaml
 kubectl create -f deploy/role_binding.yaml
 ```
 
-### Deploy the Operator
+##### Deploy the Operator
 
 ```sh
 kubectl create -f deploy/operator.yaml
 ```
 
-### Create the custom resources for mcrouter
+##### Create the custom resources for mcrouter
 
 You can change the pods to be deployed inside the files
 
@@ -58,7 +95,7 @@ kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_cr.yaml
 
 > Once everything is deployed you can use the `kubectl get all` command to check of mcrouter-operator and memcache and deployed mcrouter are working.
 
-### Use the below testing scenario to check if mcrouter and memcached are working as expected
+##### Use the below testing scenario to check if mcrouter and memcached are working as expected
 
 Connect to mcrouter using the telnet container and send the following commands to see if you get expected output
 

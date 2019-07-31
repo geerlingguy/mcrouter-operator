@@ -2,4 +2,4 @@
 - version: v1alpha2
   group: mcrouter.example.com
   kind: Mcrouter
-  role: /opt/ansible/roles/mcrouter_operator_role
+  role: /opt/ansible/roles/mcrouter

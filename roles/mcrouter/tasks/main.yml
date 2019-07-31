@@ -1,5 +1,4 @@
 ---
-# tasks file for Mcrouter
 - name: Create StatefulSet for Memcache
   k8s:
     definition: "{{ lookup('template', 'memcache_statefulset.yaml.j2')|from_yaml }}"
