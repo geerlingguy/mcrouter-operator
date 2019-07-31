@@ -41,12 +41,6 @@ rules:
   verbs:
   - update
 - apiGroups:
-  - cache.example.com
-  resources:
-  - '*'
-  verbs:
-  - '*'
-- apiGroups:
   - memcached.example.com
   resources:
   - '*'
