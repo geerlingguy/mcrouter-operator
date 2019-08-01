@@ -3,5 +3,4 @@ kind: Mcrouter
 metadata:
   name: mcrouter
 spec:
-  # Add fields here
   size: 2

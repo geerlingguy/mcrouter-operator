@@ -14,7 +14,7 @@ This Kubernetes Operator is meant to be deployed in your Kubernetes cluster(s) a
 
 First you need to deploy Mcrouter Operator into your cluster:
 
-    kubectl apply -f TODO
+    kubectl apply -f https://raw.githubusercontent.com/geerlingguy/drupal-operator/master/deploy/mcrouter-operator.yaml
 
 Then you can create instances of mcrouter, for example:
 
@@ -22,7 +22,12 @@ Then you can create instances of mcrouter, for example:
 
          ```
          ---
-         TODO
+         apiVersion: mcrouter.example.com/v1alpha2
+         kind: Mcrouter
+         metadata:
+           name: my-mcrouter
+         spec:
+           size: 2
          ```
 
   2. Use `kubectl` to create the mcrouter instance in your cluster:
@@ -45,57 +50,7 @@ Run the local molecule test scenario:
 
     molecule test -s test-local
 
-#### Local development with minikube
-
-##### Requirements
-
-  - minikube
-  - kubectl
-  - operator-sdk
-
-##### Connect to minikube docker environment
-
-```sh
-eval $(minikube docker-env)
-```
-
-##### Create the custom resource definition for mcrouter
-
-```sh
-kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_crd.yaml
-```
-
-##### Build the mcrouter-operator docker image
-
-```sh
-operator-sdk build mcrouter-operator:v0.0.1
-```
-
-##### Create service account, role and role_bindings
-
-```sh
-kubectl create -f deploy/service_account.yaml
-kubectl create -f deploy/role.yaml
-kubectl create -f deploy/role_binding.yaml
-```
-
-##### Deploy the Operator
-
-```sh
-kubectl create -f deploy/operator.yaml
-```
-
-##### Create the custom resources for mcrouter
-
-You can change the pods to be deployed inside the files
-
-```sh
-kubectl create -f deploy/crds/mcrouter_v1alpha2_mcrouter_cr.yaml
-```
-
-> Once everything is deployed you can use the `kubectl get all` command to check of mcrouter-operator and memcache and deployed mcrouter are working.
-
-##### Use the below testing scenario to check if mcrouter and memcached are working as expected
+#### Testing if mcrouter and memcached are working as expected
 
 Connect to mcrouter using the telnet container and send the following commands to see if you get expected output
 
@@ -113,6 +68,34 @@ In the telnet prompt send below commands
 ```
 
 Connect to memcached service using the telnet container and send the `stats` command to see if it gives you output.
+
+### Release Process
+
+There are a few moving parts to this project:
+
+  1. The Docker image which powers Mcrouter Operator.
+  2. The `mcrouter-operator.yaml` Kubernetes manifest file which initially deploys the Operator into a cluster.
+
+Each of these must be appropriately built in preparation for a new tag:
+
+#### Build a new release of the Operator for Docker Hub
+
+Run the following command inside this directory:
+
+    operator-sdk build geerlingguy/mcrouter-operator:0.0.1
+
+Then push the generated image to Docker Hub:
+
+    docker login -u geerlingguy
+    docker push geerlingguy/mcrouter-operator:0.0.1
+
+#### Build a new version of the `mcrouter-operator.yaml` file
+
+Verify the `build/chain-operator-files.yml` playbook has the most recent version/tag of the Docker image, then run the playbook in the `build/` directory:
+
+    ansible-playbook chain-operator-files.yml
+
+After it is built, test it on a local cluster (e.g. `minikube start` then `kubectl apply -f deploy/mcrouter-operator.yaml`), then commit the updated version and push it up to GitHub, tagging a new repository release with the same tag as the Docker image.
 
 ## Helpful articles and referenced content below:
 

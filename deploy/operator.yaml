@@ -20,14 +20,14 @@ spec:
           - /tmp/ansible-operator/runner
           - stdout
           image: "{{ operator_image }}"
-          imagePullPolicy: "Never"
+          imagePullPolicy: "{{ pull_policy }}"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
           image: "{{ operator_image }}"
-          imagePullPolicy: "Never"
+          imagePullPolicy: "{{ pull_policy }}"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
