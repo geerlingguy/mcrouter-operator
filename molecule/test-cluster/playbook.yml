@@ -16,7 +16,13 @@
 
   - name: Get the newly created Custom Resource
     debug:
-      msg: "{{ lookup('k8s', group='mcrouter.example.com', api_version='v1alpha2', kind='Mcrouter', namespace=namespace, resource_name=custom_resource.metadata.name) }}"
+      msg: "{{ lookup('k8s',
+        group='mcrouter.example.com',
+        api_version='v1alpha2',
+        kind='Mcrouter',
+        namespace=namespace,
+        resource_name=custom_resource.metadata.name
+      )}}"
 
   - name: Wait 5m for reconciliation to run
     k8s_facts:

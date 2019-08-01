@@ -14,7 +14,7 @@ This Kubernetes Operator is meant to be deployed in your Kubernetes cluster(s) a
 
 First you need to deploy Mcrouter Operator into your cluster:
 
-    kubectl apply -f https://raw.githubusercontent.com/geerlingguy/drupal-operator/master/deploy/mcrouter-operator.yaml
+    kubectl apply -f https://raw.githubusercontent.com/geerlingguy/mcrouter-operator/master/deploy/mcrouter-operator.yaml
 
 Then you can create instances of mcrouter, for example:
 
