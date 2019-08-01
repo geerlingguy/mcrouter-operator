@@ -20,21 +20,21 @@ Then you can create instances of mcrouter, for example:
 
   1. Create a file named `my-mcrouter.yml` with the following contents:
 
-         ```
-         ---
-         apiVersion: mcrouter.example.com/v1alpha2
-         kind: Mcrouter
-         metadata:
-           name: my-mcrouter
-         spec:
-           size: 2
-         ```
+     ```
+     ---
+     apiVersion: mcrouter.example.com/v1alpha2
+     kind: Mcrouter
+     metadata:
+       name: my-mcrouter
+     spec:
+       size: 2
+     ```
 
   2. Use `kubectl` to create the mcrouter instance in your cluster:
 
-         ```
-         kubectl apply -f my-mcrouter.yml
-         ```
+     ```
+     kubectl apply -f my-mcrouter.yml
+     ```
 
 ## Development
 
