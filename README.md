@@ -100,12 +100,12 @@ Each of these must be appropriately built in preparation for a new tag:
 
 Run the following command inside this directory:
 
-    operator-sdk build geerlingguy/mcrouter-operator:0.0.1
+    operator-sdk build geerlingguy/mcrouter-operator:0.1.0
 
 Then push the generated image to Docker Hub:
 
     docker login -u geerlingguy
-    docker push geerlingguy/mcrouter-operator:0.0.1
+    docker push geerlingguy/mcrouter-operator:0.1.0
 
 #### Build a new version of the `mcrouter-operator.yaml` file
 
@@ -113,7 +113,15 @@ Verify the `build/chain-operator-files.yml` playbook has the most recent version
 
     ansible-playbook chain-operator-files.yml
 
-After it is built, test it on a local cluster (e.g. `minikube start` then `kubectl apply -f deploy/mcrouter-operator.yaml`), then commit the updated version and push it up to GitHub, tagging a new repository release with the same tag as the Docker image.
+After it is built, test it on a local cluster:
+
+    minikube start
+    kubectl apply -f deploy/mcrouter-operator.yaml
+    kubectl apply -f deploy/crds/mcrouter_v1alpha3_mcrouter_cr.yaml
+    <test everything>
+    minikube delete
+
+If everything works, commit the updated version, then tag a new repository release with the same tag as the Docker image pushed earlier.
 
 ## More resources for Ansible Operator SDK and Mcrouter
 

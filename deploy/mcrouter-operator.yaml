@@ -113,14 +113,14 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: "geerlingguy/mcrouter-operator:0.0.1"
+          image: "geerlingguy/mcrouter-operator:0.1.0"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
-          image: "geerlingguy/mcrouter-operator:0.0.1"
+          image: "geerlingguy/mcrouter-operator:0.1.0"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
