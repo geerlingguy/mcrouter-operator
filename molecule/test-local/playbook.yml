@@ -2,8 +2,11 @@
 
 - name: Build Operator in Kubernetes docker container
   hosts: k8s
+  gather_facts: false
+
   vars:
     image_name: mcrouter.example.com/mcrouter-operator:testing
+
   tasks:
   # using command so we don't need to install any dependencies
   - name: Get existing image hash

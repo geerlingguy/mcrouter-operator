@@ -52,11 +52,17 @@ Run the local molecule test scenario:
 
 #### Testing if mcrouter and memcached are working as expected
 
-Connect to mcrouter using the telnet container and send the following commands to see if you get expected output
+Get the Kubernetes network IP address for the mcrouter pod:
+
+    kubectl describe deployment mcrouter
+
+Then run a `telnet` container to connect to mcrouter directly:
 
 ```sh
 kubectl run -it --rm telnet --image=jess/telnet --restart=Never <mcrouter_pod_ip> 5000
 ```
+
+After a few seconds you will see a message like `If you don't see a command prompt, try pressing enter.`. Don't press enter, because telnet doesn't display a prompt. Instead, enter the below commands:
 
 In the telnet prompt send below commands
 
