@@ -12,16 +12,6 @@
         value: buzz
 
   tasks:
-    - name: Get all pods in {{ namespace }}
-      k8s_facts:
-        api_version: v1
-        kind: Pod
-        namespace: '{{ namespace }}'
-      register: pods
-
-    - name: Output pods
-      debug: var=pods
-
     - name: Get mcrouter Pod data
       k8s_facts:
         kind: Pod
@@ -34,14 +24,14 @@
       set_fact:
         mcrouter_pod_ip: "{{ mcrouter_pod.resources[0].status.podIP }}"
 
-    - name: Test setting keys
+    - name: Test setting keys via mcrouter
       script: ./membash.sh -h {{ mcrouter_pod_ip }} -p 5000 set {{ item.key }} 0 {{ item.value }}
       register: membash_key
       delegate_to: "{{ groups.k8s[0] }}"
       with_items: "{{ test_keys }}"
       failed_when: membash_key.stdout_lines[0] != 'STORED'
 
-    - name: Test getting keys that were just set
+    - name: Test getting keys from mcrouter
       script: ./membash.sh -h {{ mcrouter_pod_ip }} -p 5000 get {{ item.key }}
       register: membash_key
       delegate_to: "{{ groups.k8s[0] }}"
@@ -53,8 +43,25 @@
       register: membash_stats
       delegate_to: "{{ groups.k8s[0] }}"
       failed_when: "'STAT num_servers_up 2' not in membash_stats.stdout"
-      vars:
-        ansible_python_interpreter: "/usr/bin/python"
 
-    - name: Display memcached / mcrouter
-      debug: var=membash_stats
+    - name: Get memcached Pod data
+      k8s_facts:
+        kind: Pod
+        namespace: '{{ namespace }}'
+        label_selectors:
+          - app=mcrouter-cache
+      register: memcached_pods
+
+    - name: Test getting keys directly from memcached pod 0 with IP {{ memcached_pods.resources[0].status.podIP }}
+      script: ./membash.sh -h {{ memcached_pods.resources[0].status.podIP }} get {{ item.key }}
+      register: membash_key
+      delegate_to: "{{ groups.k8s[0] }}"
+      with_items: "{{ test_keys }}"
+      failed_when: membash_key.stdout_lines[0] != item.value
+
+    - name: Test getting keys directly from memcached pod 1 with IP {{ memcached_pods.resources[1].status.podIP }}
+      script: ./membash.sh -h {{ memcached_pods.resources[1].status.podIP }} get {{ item.key }}
+      register: membash_key
+      delegate_to: "{{ groups.k8s[0] }}"
+      with_items: "{{ test_keys }}"
+      failed_when: membash_key.stdout_lines[0] != item.value

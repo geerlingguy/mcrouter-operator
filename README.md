@@ -27,7 +27,12 @@ Then you can create instances of mcrouter, for example:
      metadata:
        name: my-mcrouter
      spec:
-       size: 2
+       # The size of the memcached pool.
+       size: 3
+       # The memcached pool can be 'sharded' or 'replicated'.
+       pool_setup: replicated
+       # Set to '/var/mcrouter/fifos' to debug mcrouter with mcpiper.
+       debug_fifo_root: /var/mcrouter/fifos
      ```
 
   2. Use `kubectl` to create the mcrouter instance in your cluster:
@@ -35,6 +40,8 @@ Then you can create instances of mcrouter, for example:
      ```
      kubectl apply -f my-mcrouter.yml
      ```
+
+> **What's the difference between `sharded` and `replicated`**: `sharded` uses a key hashing algorithm to distribute Memcached `set`s and `get`s among Memcached Pods; this means a key `foo` may always go to pod A, while the key `bar` always goes to pod B. `replicated` sends all Memcached `set`s to all Memcached pods, and distributes `get`s randomly.
 
 ## Development
 
@@ -64,16 +71,17 @@ kubectl run -it --rm telnet --image=jess/telnet --restart=Never <mcrouter_pod_ip
 
 After a few seconds you will see a message like `If you don't see a command prompt, try pressing enter.`. Don't press enter, because telnet doesn't display a prompt. Instead, enter the below commands:
 
-In the telnet prompt send below commands
+In the telnet prompt send commands like the following:
 
 ```
     set mykey 0 0 5
     hello
     get mykey
+    stats
     quit
 ```
 
-Connect to memcached service using the telnet container and send the `stats` command to see if it gives you output.
+You can also inspect Mcrouter fifos using `mcpiper`, by setting `spec.debug_fifo_root` to `/var/mcrouter/fifos`, then running `mcpiper` inside the mcrouter pod once it's reconfigured: `/usr/local/mcrouter/install/bin/mcpiper`. Note that you will not see any output (besides maybe an error message) until requests are sent to mcrouter.
 
 ### Release Process
 
@@ -103,11 +111,12 @@ Verify the `build/chain-operator-files.yml` playbook has the most recent version
 
 After it is built, test it on a local cluster (e.g. `minikube start` then `kubectl apply -f deploy/mcrouter-operator.yaml`), then commit the updated version and push it up to GitHub, tagging a new repository release with the same tag as the Docker image.
 
-## Helpful articles and referenced content below:
+## More resources for Ansible Operator SDK and Mcrouter
 
-  - https://www.ansible.com/blog/ansible-operator
-  - https://opensource.com/article/18/10/ansible-operators-kubernetes
-  - https://blog.openshift.com/reaching-for-the-stars-with-ansible-operator/
-  - https://github.com/Dev25/mcrouter-docker/
-  - https://itnext.io/a-practical-kubernetes-operator-using-ansible-an-example-d3a9d3674d5b
-  - https://github.com/helm/charts/tree/master/stable/mcrouter
+  - [Ansible Operator: What is it? Why it matters? What can you do with it?](https://www.ansible.com/blog/ansible-operator)
+  - [An introduction to Ansible Operators in Kubernetes](https://opensource.com/article/18/10/ansible-operators-kubernetes)
+  - [Reaching for the Stars with Ansible Operator](https://blog.openshift.com/reaching-for-the-stars-with-ansible-operator/)
+  - [Mcrouter Wiki](https://github.com/facebook/mcrouter/wiki)
+  - [Mcrouter Docker image](https://github.com/Dev25/mcrouter-docker/)
+  - [A Practical kubernetes Operator using Ansible — an example](https://itnext.io/a-practical-kubernetes-operator-using-ansible-an-example-d3a9d3674d5b)
+  - [Mcrouter Helm Chart](https://github.com/helm/charts/tree/master/stable/mcrouter)

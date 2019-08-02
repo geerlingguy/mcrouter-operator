@@ -4,3 +4,5 @@ metadata:
   name: mcrouter
 spec:
   size: 2
+  pool_setup: replicated # or 'sharded'
+  debug_fifo_root: '' # set to '/var/mcrouter/fifos' for mcpiper
