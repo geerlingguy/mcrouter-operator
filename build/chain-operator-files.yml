@@ -27,7 +27,7 @@
         marker_end: ""
         insertafter: "EOF"
       with_file:
-        - "../deploy/crds/mcrouter_v1alpha2_mcrouter_crd.yaml"
+        - "../deploy/crds/mcrouter_v1alpha3_mcrouter_crd.yaml"
         - "../deploy/role.yaml"
         - "../deploy/role_binding.yaml"
         - "../deploy/service_account.yaml"

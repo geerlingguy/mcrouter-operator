@@ -1,4 +1,4 @@
-apiVersion: mcrouter.example.com/v1alpha2
+apiVersion: mcrouter.example.com/v1alpha3
 kind: Mcrouter
 metadata:
   name: mcrouter

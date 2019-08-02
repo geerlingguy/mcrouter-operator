@@ -1,5 +1,5 @@
 ---
-- version: v1alpha2
+- version: v1alpha3
   group: mcrouter.example.com
   kind: Mcrouter
   role: /opt/ansible/roles/mcrouter

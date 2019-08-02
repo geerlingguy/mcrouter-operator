@@ -22,7 +22,7 @@ Then you can create instances of mcrouter, for example:
 
      ```
      ---
-     apiVersion: mcrouter.example.com/v1alpha2
+     apiVersion: mcrouter.example.com/v1alpha3
      kind: Mcrouter
      metadata:
        name: my-mcrouter
