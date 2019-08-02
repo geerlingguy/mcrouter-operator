@@ -4,7 +4,7 @@ metadata:
   name: '{{ meta.name }}-memcached'
   namespace: '{{ meta.namespace }}'
 spec:
-  replicas: {{ size|int }}
+  replicas: {{ memcached_pool_size|int }}
   serviceName: '{{ meta.name }}-memcached'
   selector:
     matchLabels:
@@ -16,12 +16,7 @@ spec:
     spec:
       containers:
       - name: memcached
-        command:
-        - memcached
-        - -m=64
-        - -o
-        - modern
-        - -v
-        image: "memcached:1.4.36-alpine"
+        command: ["memcached", "-m", "256", "-I", "32m", "-v"]
+        image: '{{ memcached_image }}'
         ports:
-          - containerPort: 11211
+          - containerPort: {{ memcached_port }}

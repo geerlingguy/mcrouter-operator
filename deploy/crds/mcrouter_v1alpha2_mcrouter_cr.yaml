@@ -3,6 +3,10 @@ kind: Mcrouter
 metadata:
   name: mcrouter
 spec:
-  size: 2
+  mcrouter_image: devan2502/mcrouter:latest
+  mcrouter_port: 5000
+  memcached_image: memcached:1.5-alpine
+  memcached_pool_size: 2
+  memcached_port: 11211
   pool_setup: replicated # or 'sharded'
   debug_fifo_root: '' # set to '/var/mcrouter/fifos' for mcpiper

@@ -1,3 +1,2 @@
 ---
-# vars file for Memcached
-memcache_pool_str: '{% for item in range(size|int) %}"{{ meta.name }}-memcached-{{ item }}.{{ meta.name }}-memcached.{{ meta.namespace }}.svc.cluster.local:11211"{% if not loop.last%},{% endif %}{% endfor %}'
+memcached_pool_str: '{% for item in range(memcached_pool_size|int) %}"{{ meta.name }}-memcached-{{ item }}.{{ meta.name }}-memcached.{{ meta.namespace }}.svc.cluster.local:{{ memcached_port }}"{% if not loop.last%},{% endif %}{% endfor %}'

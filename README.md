@@ -27,8 +27,12 @@ Then you can create instances of mcrouter, for example:
      metadata:
        name: my-mcrouter
      spec:
+       mcrouter_image: devan2502/mcrouter:latest
+       mcrouter_port: 5000
+       memcached_image: memcached:1.5-alpine
        # The size of the memcached pool.
-       size: 3
+       memcached_pool_size: 3
+       memcached_port: 11211
        # The memcached pool can be 'sharded' or 'replicated'.
        pool_setup: replicated
        # Set to '/var/mcrouter/fifos' to debug mcrouter with mcpiper.

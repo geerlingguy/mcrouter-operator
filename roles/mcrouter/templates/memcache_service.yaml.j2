@@ -5,7 +5,7 @@ metadata:
   namespace: '{{ meta.namespace }}'
 spec:
   ports:
-  - port: 11211
+  - port: {{ memcached_port }}
     protocol: TCP
   selector:
     matchLabels:

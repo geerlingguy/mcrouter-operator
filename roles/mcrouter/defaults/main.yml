@@ -1,3 +1,2 @@
 ---
-# defaults file for Mcrouter
-size: 1
+memcache_pool_size: 2
