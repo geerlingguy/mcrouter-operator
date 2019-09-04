@@ -112,17 +112,17 @@ One simple way to verify Mcrouter operator is working correctly is to change the
 
   1. See how many memcached pods are currently running: `kubectl get pods -l app=mcrouter-cache`
   1. See how Mcrouter is currently configured: `kubectl describe pod -l app=mcrouter`
-    1. Verify all the current memcached pods are listed in the 'servers' inside `--config-str` in the mcrouter container command.
+     1. Verify all the current memcached pods are listed in the 'servers' inside `--config-str` in the mcrouter container command.
   1. Edit the Mcrouter resource: `kubectl edit mcrouter my-mcrouter`
-    1. Change `memcached_pool_size` to `4`
-    1. Save the change.
+     1. Change `memcached_pool_size` to `4`
+     1. Save the change.
   1. Check the status of your mcrouter instance: `kubectl describe mcrouter my-mcrouter`
-    1. For a minute or two, the operator will be running a 'reconciliation' to ensure the cluster is updated to reflect the updated mcrouter spec you just saved.
-    1. Once it's done applying the necessary changes, the status message will read "Awaiting next reconciliation".
+     1. For a minute or two, the operator will be running a 'reconciliation' to ensure the cluster is updated to reflect the updated mcrouter spec you just saved.
+     1. Once it's done applying the necessary changes, the status message will read "Awaiting next reconciliation".
   1. See how many memcached pods are now running: `kubectl get pods -l app=mcrouter-cache`
-    1. You should now see four pods in the list.
+     1. You should now see four pods in the list.
   1. See how Mcrouter is now configured: `kubectl describe pod -l app=mcrouter`
-    1. You should now see all four of the memcached pods in the `--config-str`.
+     1. You should now see all four of the memcached pods in the `--config-str`.
 
 Another thing you could do is delete one of the Memcached pods and see what happens:
 
