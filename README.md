@@ -27,16 +27,9 @@ Then you can create instances of mcrouter, for example:
      metadata:
        name: my-mcrouter
      spec:
-       mcrouter_image: devan2502/mcrouter:latest
-       mcrouter_port: 5000
-       memcached_image: memcached:1.5-alpine
-       # The size of the memcached pool.
        memcached_pool_size: 3
-       memcached_port: 11211
        # The memcached pool can be 'sharded' or 'replicated'.
        pool_setup: replicated
-       # Set to '/var/mcrouter/fifos' to debug mcrouter with mcpiper.
-       debug_fifo_root: /var/mcrouter/fifos
      ```
 
   2. Use `kubectl` to create the mcrouter instance in your cluster:
@@ -46,6 +39,32 @@ Then you can create instances of mcrouter, for example:
      ```
 
 > **What's the difference between `sharded` and `replicated`**: `sharded` uses a key hashing algorithm to distribute Memcached `set`s and `get`s among Memcached Pods; this means a key `foo` may always go to pod A, while the key `bar` always goes to pod B. `replicated` sends all Memcached `set`s to all Memcached pods, and distributes `get`s randomly.
+
+### Available parameters in the Mcrouter spec
+
+There are a number of configurable options in the `spec` for your Mcrouter resources. For full details on each available variable, see the [mcrouter role README](roles/mcrouter/README.md).
+
+    spec:
+      # The image to run for the `mcrouter` Deployment.
+      mcrouter_image: devan2502/mcrouter:latest
+    
+      # The port Mcrouter will run on.
+      mcrouter_port: 5000
+    
+      # The image to run for the `memcached` StatefulSet.
+      memcached_image: memcached:1.5-alpine
+    
+      # The size of the memcached pool.
+      memcached_pool_size: 3
+    
+      # The port Memcached will run on.
+      memcached_port: 11211
+    
+      # The memcached pool can be 'sharded' or 'replicated'.
+      pool_setup: replicated
+    
+      # Set to '/var/mcrouter/fifos' to debug mcrouter with mcpiper.
+      debug_fifo_root: ''
 
 ## Development
 
@@ -86,6 +105,34 @@ In the telnet prompt send commands like the following:
 ```
 
 You can also inspect Mcrouter fifos using `mcpiper`, by setting `spec.debug_fifo_root` to `/var/mcrouter/fifos`, then running `mcpiper` inside the mcrouter pod once it's reconfigured: `/usr/local/mcrouter/install/bin/mcpiper`. Note that you will not see any output (besides maybe an error message) until requests are sent to mcrouter.
+
+#### Testing the operator is working as expected
+
+One simple way to verify Mcrouter operator is working correctly is to change the `memcached_pool_size` in your Mcrouter resource, then observe what happens in the cluster:
+
+  1. See how many memcached pods are currently running: `kubectl get pods -l app=mcrouter-cache`
+  1. See how Mcrouter is currently configured: `kubectl describe pod -l app=mcrouter`
+    1. Verify all the current memcached pods are listed in the 'servers' inside `--config-str` in the mcrouter container command.
+  1. Edit the Mcrouter resource: `kubectl edit mcrouter my-mcrouter`
+    1. Change `memcached_pool_size` to `4`
+    1. Save the change.
+  1. Check the status of your mcrouter instance: `kubectl describe mcrouter my-mcrouter`
+    1. For a minute or two, the operator will be running a 'reconciliation' to ensure the cluster is updated to reflect the updated mcrouter spec you just saved.
+    1. Once it's done applying the necessary changes, the status message will read "Awaiting next reconciliation".
+  1. See how many memcached pods are now running: `kubectl get pods -l app=mcrouter-cache`
+    1. You should now see four pods in the list.
+  1. See how Mcrouter is now configured: `kubectl describe pod -l app=mcrouter`
+    1. You should now see all four of the memcached pods in the `--config-str`.
+
+Another thing you could do is delete one of the Memcached pods and see what happens:
+
+    kubectl delete pod mcrouter-memcached-2
+
+Within a few seconds, you should see that the deleted pod has been replaced by Kubernetes. Because mcrouter uses DNS to distribute requests to the memcached instances, there might be a single dropped connection if there was an active request to the deleted instance, but other than that rare occurrence, the loss of a single memcached pod should have no affect on the availability of the entire cache backend.
+
+Note that because Memcached does not include any kind of replication, and Mcrouter does not backfill new Memcached instances (they will start with an empty cache), advanced usage of Mcrouter and Memcached in high-availability, high-performance environments requires more fine tuning in the replication strategy.
+
+Also, your application should always be able to fall back and re-set a key if a particular cache key has vanished. Basically, don't rely on Mcrouter or Memcached for a data persistence layer!
 
 ### Release Process
 
