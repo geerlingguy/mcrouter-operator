@@ -100,16 +100,21 @@ Each of these must be appropriately built in preparation for a new tag:
 
 Run the following command inside this directory:
 
-    operator-sdk build geerlingguy/mcrouter-operator:0.1.0
+    operator-sdk build geerlingguy/mcrouter-operator:0.2.0
 
 Then push the generated image to Docker Hub:
 
     docker login -u geerlingguy
-    docker push geerlingguy/mcrouter-operator:0.1.0
+    docker push geerlingguy/mcrouter-operator:0.2.0
 
 #### Build a new version of the `mcrouter-operator.yaml` file
 
-Verify the `build/chain-operator-files.yml` playbook has the most recent version/tag of the Docker image, then run the playbook in the `build/` directory:
+Update the mcrouter-operator version in two places:
+
+  1. `deploy/mcrouter-operator.yaml`: in the `ansible` and `operator` container definitions in the `mcrouter-operator` Deployment.
+  2. `build/chain-operator-files.yml`: the `operator_image` variable.
+
+Once the versions are updated, run the playbook in the `build/` directory:
 
     ansible-playbook chain-operator-files.yml
 
