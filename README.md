@@ -65,7 +65,7 @@ Run the local molecule test scenario:
 
 Get the Kubernetes network IP address for the mcrouter pod:
 
-    kubectl describe deployment mcrouter
+    kubectl describe pod -l app=mcrouter
 
 Then run a `telnet` container to connect to mcrouter directly:
 
