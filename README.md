@@ -177,6 +177,7 @@ If everything works, commit the updated version, then tag a new repository relea
 
 ## More resources for Ansible Operator SDK and Mcrouter
 
+  - [Mcrouter Operator - demonstration of K8s Operator SDK usage with Ansible](https://www.jeffgeerling.com/blog/2019/mcrouter-operator-demonstration-k8s-operator-sdk-usage-ansible)
   - [Ansible Operator: What is it? Why it matters? What can you do with it?](https://www.ansible.com/blog/ansible-operator)
   - [An introduction to Ansible Operators in Kubernetes](https://opensource.com/article/18/10/ansible-operators-kubernetes)
   - [Reaching for the Stars with Ansible Operator](https://blog.openshift.com/reaching-for-the-stars-with-ansible-operator/)
