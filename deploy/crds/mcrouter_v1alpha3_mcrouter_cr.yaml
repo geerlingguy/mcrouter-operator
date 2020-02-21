@@ -1,3 +1,4 @@
+---
 apiVersion: mcrouter.example.com/v1alpha3
 kind: Mcrouter
 metadata:
@@ -8,5 +9,5 @@ spec:
   memcached_image: memcached:1.5-alpine
   memcached_pool_size: 2
   memcached_port: 11211
-  pool_setup: replicated # or 'sharded'
-  debug_fifo_root: '' # set to '/var/mcrouter/fifos' for mcpiper
+  pool_setup: replicated  # or 'sharded'
+  debug_fifo_root: ''  # set to '/var/mcrouter/fifos' for mcpiper
