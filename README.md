@@ -147,12 +147,11 @@ Each of these must be appropriately built in preparation for a new tag:
 
 Run the following command inside this directory:
 
-    operator-sdk build geerlingguy/mcrouter-operator:0.2.0
+    operator-sdk build geerlingguy/mcrouter-operator:0.2.1
 
 Then push the generated image to Docker Hub:
 
-    docker login -u geerlingguy
-    docker push geerlingguy/mcrouter-operator:0.2.0
+    docker push geerlingguy/mcrouter-operator:0.2.1
 
 #### Build a new version of the `mcrouter-operator.yaml` file
 
