@@ -6,7 +6,7 @@ The Mcrouter Operator was built with the [Ansible Operator SDK](https://github.c
 
 [Mcrouter](https://github.com/facebook/mcrouter) is a memcached protocol router for scaling memcached deployments, written by Facebook.
 
-[Dylan Murray](https://github.com/dymurray)'s memcached operator was the original inspiration for this operator.
+[Dylan Murray](https://github.com/dymurray)'s memcached operator was the original inspiration for this operator, and this project was originally forked from the [AnsOpDemo](https://github.com/Ansible-Getting-Started/AnsOpDemo) repository.
 
 ## Usage
 
