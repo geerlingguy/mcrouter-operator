@@ -6,7 +6,7 @@
   gather_facts: false
 
   vars:
-    operator_image: geerlingguy/mcrouter-operator:0.2.1
+    operator_image: geerlingguy/mcrouter-operator:0.2.2
     pull_policy: Always
     operator_file_path: "../deploy/mcrouter-operator.yaml"
     operator_template: "../deploy/operator.yaml"
