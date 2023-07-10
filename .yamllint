@@ -10,6 +10,6 @@ rules:
     level: error
   line-length: disable
   truthy: disable
-  document-start:
-    ignore: |
-      .github/stale.yml
+
+ignore: |
+  .github/workflows/stale.yml
